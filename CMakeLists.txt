@@ -26,6 +26,42 @@ if(CMAKE_SYSTEM_NAME STREQUAL Windows)
   link_directories(${DISPATCH_LIBDIR})
 endif()
 
+set(CMAKE_CROSSCOMPILING TRUE)
+SET(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR arm)
+
+set(CMAKE_SYSROOT /opt/fsl-imx-fb/4.9.11-1.0.0/sysroots/cortexa7hf-neon-poky-linux-gnueabi)
+
+# Clang target triple
+#SET(TARGET arm-linux-gnueabihf)
+#SET(TARGET arm-linux-gnueabi) # complains about not finding soft float gnu-stubs header
+SET(TARGET arm-poky-linux-gnueabihf)
+
+# specify the cross compiler
+SET(CMAKE_C_COMPILER_TARGET ${TARGET})
+SET(CMAKE_C_COMPILER clang)
+SET(CMAKE_CXX_COMPILER_TARGET ${TARGET})
+SET(CMAKE_CXX_COMPILER clang++)
+SET(CMAKE_ASM_COMPILER_TARGET ${TARGET})
+SET(CMAKE_ASM_COMPILER clang)
+
+# find /opt/fsl-imx-fb/4.9.11-1.0.0/sysroots/ -iname types.h
+#include_directories(/opt/fsl-imx-fb/4.9.11-1.0.0/sysroots/cortexa7hf-neon-poky-linux-gnueabi/usr/include)
+
+link_directories(/opt/fsl-imx-fb/4.9.11-1.0.0/sysroots/cortexa7hf-neon-poky-linux-gnueabi/usr/lib /opt/fsl-imx-fb/4.9.11-1.0.0/sysroots/cortexa7hf-neon-poky-linux-gnueabi/usr/lib/arm-poky-linux-gnueabi/6.2.0)
+#link_directories(BEFORE SYSTEM /opt/fsl-imx-fb/4.9.11-1.0.0/sysroots/cortexa7hf-neon-poky-linux-gnueabi/usr/lib)
+#target_link_directories(/opt/fsl-imx-fb/4.9.11-1.0.0/sysroots/cortexa7hf-neon-poky-linux-gnueabi/usr/lib)
+#target_link_directories(/opt/fsl-imx-fb/4.9.11-1.0.0/sysroots/cortexa7hf-neon-poky-linux-gnueabi/usr/lib/arm-poky-linux-gnueabi/6.2.0)
+#target_link_libraries(/opt/fsl-imx-fb/4.9.11-1.0.0/sysroots/cortexa7hf-neon-poky-linux-gnueabi/usr/lib/arm-poky-linux-gnueabi/6.2.0/crtbeginS.o)
+
+#SET(CMAKE_INSTALL_RPATH "/opt/fsl-imx-fb/4.9.11-1.0.0/sysroots/cortexa7hf-neon-poky-linux-gnueabi/usr/lib")
+#SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+# C/C++ toolchain
+SET(TOOLCHAIN "/opt/fsl-imx-fb/4.9.11-1.0.0/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi")
+SET(CMAKE_C_COMPILER_EXTERNAL_TOOLCHAIN ${TOOLCHAIN})
+SET(CMAKE_CXX_COMPILER_EXTERNAL_TOOLCHAIN ${TOOLCHAIN})
+
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED YES)
 
@@ -113,7 +149,7 @@ if(__BUILTIN_TRAP)
   set(HAVE_NORETURN_BUILTIN_TRAP 1)
 endif()
 
-find_package(LibRT)
+#find_package(LibRT)
 
 check_function_exists(_pthread_workqueue_init HAVE__PTHREAD_WORKQUEUE_INIT)
 check_function_exists(getprogname HAVE_GETPROGNAME)

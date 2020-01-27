@@ -168,3 +168,9 @@ to get the gold linker.
     ninja install
     ```
 
+### Building and installing for Linux on NA503
+
+1. install the yocto-produced SDK to the default `/opt` location
+2. `sudo apt install libgcc-4.8-dev` `sudo apt-get install cmake ninja-build clang systemtap-sdt-dev libbsd-dev linux-libc-dev`
+3. run `bash NEMIK_CMAKE`
+4. `ninja`
